@@ -49,18 +49,17 @@ func main() {
     	logger.Error("DB_DSN environment variable not set")
     	os.Exit(1)
 	}
+	logger.Info("Connecting to Database...")
 
-logger.Info("Connecting to Database...")
-
-// calling helper function to open the connection
-db, err := openDB(dsn)
-if err != nil {
-    logger.Error("Cannot connect to database", "error", err)
-    os.Exit(1)
-}
-
-defer db.Close()
-logger.Info("SUCCESS! Database connection established")
+	// calling helper function to open the connection
+	db, err := openDB(dsn)
+	if err != nil {
+	    logger.Error("Cannot connect to database", "error", err)
+	    os.Exit(1)
+	}
+	
+	defer db.Close()
+	logger.Info("SUCCESS! Database connection established")
 
 	app := &application{
 		DB:     db,
