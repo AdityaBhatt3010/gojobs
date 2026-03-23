@@ -36,7 +36,6 @@ func main() {
 	err := godotenv.Load()
 	if err != nil {
 		logger.Info("No .env file found, relying on system environment variables")
-    	os.Exit(1)
 	}
 
 	port := os.Getenv("PORT")
