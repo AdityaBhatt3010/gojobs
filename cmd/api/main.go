@@ -36,26 +36,32 @@ func main() {
 	err := godotenv.Load()
 	if err != nil {
 		logger.Info("No .env file found, relying on system environment variables")
+    	os.Exit(1)
 	}
 
-	port := os.Getenv("port")
+	port := os.Getenv("PORT")
 	if port == "" {
-		logger.Error("DB_DSN environment variable not set")
+    	logger.Error("PORT environment variable not set")
+    	os.Exit(1)
 	}
 
 	dsn := os.Getenv("DB_DSN")
 	if dsn == "" {
-		logger.Error("DB_DSN environment variable not set")
+    	logger.Error("DB_DSN environment variable not set")
+    	os.Exit(1)
 	}
-	logger.Info("Connecting to Cloud Database...")
 
-	// calling helper function to open the connection
-	db, err := openDB(dsn)
-	if err != nil {
-		logger.Error("Cannot connect to database", "error", err)
-	}
-	defer db.Close()
-	logger.Info("SUCCESS! Database connection established")
+logger.Info("Connecting to Database...")
+
+// calling helper function to open the connection
+db, err := openDB(dsn)
+if err != nil {
+    logger.Error("Cannot connect to database", "error", err)
+    os.Exit(1)
+}
+
+defer db.Close()
+logger.Info("SUCCESS! Database connection established")
 
 	app := &application{
 		DB:     db,
